@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN 优选节点生成工具</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-network-wired"></i> CDN 优选节点生成器</h1>
+            <p>为您的 Cloudflare/Cloudfront 节点自动替换优选 IP</p>
+        </header>
+
+        <main>
+            <!-- 左侧：输入与配置 -->
+            <div class="card input-section">
+                <div class="form-group">
+                    <label for="rawNodes"><i class="fas fa-link"></i> 原始节点链接 (Vmess/Vless/Trojan)</label>
+                    <textarea id="rawNodes" placeholder="请粘贴您的节点链接，支持多行..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cdnProvider"><i class="fas fa-server"></i> CDN 提供商</label>
+                    <select id="cdnProvider" onchange="updateDefaultIPs()">
+                        <option value="cloudflare">Cloudflare</option>
+                        <option value="cloudfront">Cloudfront</option>
+                        <option value="gcore">Gcore</option>
+                        <option value="custom">自定义 (Custom)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bestIPs">
+                        <i class="fas fa-list-ol"></i> 优选 IP 列表 
+                        <span class="tooltip" title="每行一个 IP 或 域名。工具会将原始节点的地址替换为这些 IP。"><i class="fas fa-question-circle"></i></span>
+                    </label>
+                    <textarea id="bestIPs" placeholder="请输入优选 IP，每行一个..."></textarea>
+                    <div class="quick-actions">
+                        <button class="btn-small" onclick="fetchPublicIPs()"><i class="fas fa-cloud-download-alt"></i> 获取公开优选库</button>
+                        <button class="btn-small" onclick="clearIPs()"><i class="fas fa-trash"></i> 清空</button>
+                    </div>
+                </div>
+                
+                <button id="generateBtn" onclick="generateNodes()"><i class="fas fa-magic"></i> 生成优选节点</button>
+            </div>
+
+            <!-- 右侧：结果输出 -->
+            <div class="card output-section">
+                <div class="output-header">
+                    <label><i class="fas fa-file-export"></i> 生成结果</label>
+                    <div class="stats" id="stats">生成: 0 个节点</div>
+                </div>
+                <textarea id="resultOutput" readonly placeholder="生成的新节点链接将显示在这里..."></textarea>
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="copyResult()"><i class="fas fa-copy"></i> 一键复制</button>
+                    <button class="btn-secondary" onclick="downloadSub()"><i class="fas fa-download"></i> 下载订阅文件</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>CDN Tool - 用于网络优化的辅助工具 | <a href="https://github.com/your-repo" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
